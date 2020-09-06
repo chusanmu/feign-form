@@ -26,6 +26,7 @@ public interface Writer {
 
   /**
    * Processing form data to request body.
+   * TODO: 把value写到output中
    *
    * @param output    output writer.
    * @param boundary  data boundary.
@@ -37,6 +38,7 @@ public interface Writer {
   void write (Output output, String boundary, String key, Object value) throws EncodeException;
 
   /**
+   * TODO: 当前write是否支持写出这个value
    * Answers on question - "could this writer properly write the value".
    *
    * @param value object to write.

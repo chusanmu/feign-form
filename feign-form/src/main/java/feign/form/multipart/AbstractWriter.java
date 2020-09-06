@@ -25,6 +25,7 @@ import lombok.SneakyThrows;
 import lombok.val;
 
 /**
+ * 对writer的抽象
  *
  * @author Artem Labazin
  */

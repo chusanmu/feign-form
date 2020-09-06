@@ -22,7 +22,7 @@ import feign.codec.EncodeException;
 import lombok.val;
 
 /**
- *
+ * 对简单类型的支持，String , Number 等等。。
  * @author Artem Labazin
  */
 public class SingleParameterWriter extends AbstractWriter {

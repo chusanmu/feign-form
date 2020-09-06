@@ -24,6 +24,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
+ * TODO: 可以封装成对象进行表单提交，对于对象的字段，可以使用此注解来指定
  *
  * @author marembo
  */

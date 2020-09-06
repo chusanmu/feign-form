@@ -33,8 +33,16 @@ import lombok.val;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 public class PojoWriter extends AbstractWriter {
 
+  /**
+   * 将所有的writers组合进来
+   */
   Iterable<Writer> writers;
 
+  /**
+   * TODO: 对Java对象的支持
+   * @param object
+   * @return
+   */
   @Override
   public boolean isApplicable (Object object) {
     return isUserPojo(object);
@@ -42,13 +50,15 @@ public class PojoWriter extends AbstractWriter {
 
   @Override
   public void write (Output output, String boundary, String key, Object object) throws EncodeException {
+    // TODO: 将当前对象转为map
     val map = toMap(object);
     for (val entry : map.entrySet()) {
+      // TODO: 根据每个字段的值拿到writer
       val writer = findApplicableWriter(entry.getValue());
       if (writer == null) {
         continue;
       }
-
+      // TODO: 利用write进行写出
       writer.write(output, boundary, entry.getKey(), entry.getValue());
     }
   }

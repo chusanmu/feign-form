@@ -46,12 +46,15 @@ import lombok.experimental.FieldDefaults;
 import lombok.val;
 
 /**
- *
+ * TODO: MultipartForm 类型 的处理器
  * @author Artem Labazin
  */
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 public class MultipartFormContentProcessor implements ContentProcessor {
 
+  /**
+   * 组合了一系列的writer
+   */
   Deque<Writer> writers;
 
   Writer defaultPerocessor;
@@ -69,6 +72,7 @@ public class MultipartFormContentProcessor implements ContentProcessor {
     addWriter(new ManyFilesWriter());
     addWriter(new SingleParameterWriter());
     addWriter(new ManyParametersWriter());
+    // TODO: 将所有的writers组合到pojoWriter中
     addWriter(new PojoWriter(writers));
 
     defaultPerocessor = new DelegateWriter(delegate);
@@ -83,6 +87,7 @@ public class MultipartFormContentProcessor implements ContentProcessor {
       if (entry == null || entry.getKey() == null || entry.getValue() == null) {
         continue;
       }
+      // TODO: 找到当前支持的writer，然后利用writer来进行写出
       val writer = findApplicableWriter(entry.getValue());
       writer.write(output, boundary, entry.getKey(), entry.getValue());
     }
@@ -102,9 +107,11 @@ public class MultipartFormContentProcessor implements ContentProcessor {
     // so, I set it to null (in spite of availability charset) for backward compatibility.
     val bytes = output.toByteArray();
     val body = Request.Body.encoded(bytes, null);
+    // TODO: 将编码后的放到body体中
     template.body(body);
 
     try {
+      // TODO: 最后关闭流
       output.close();
     } catch (IOException ex) {
       throw new EncodeException("Output closing error", ex);

@@ -37,6 +37,7 @@ public interface ContentProcessor {
   String CRLF = "\r\n";
 
   /**
+   * TODO: 进行处理
    * Processes a request.
    *
    * @param template  Feign's request template.
@@ -48,6 +49,7 @@ public interface ContentProcessor {
   void process (RequestTemplate template, Charset charset, Map<String, Object> data) throws EncodeException;
 
   /**
+   * TODO: 返回它支持的contentType
    * Returns supported {@link ContentType} of this processor.
    *
    * @return supported content type enum value.

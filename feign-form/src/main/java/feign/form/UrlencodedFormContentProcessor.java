@@ -64,6 +64,7 @@ public class UrlencodedFormContentProcessor implements ContentProcessor {
         .append("; charset=").append(charset.name())
         .toString();
 
+    // TODO: 编码后放进body体中
     val bytes = bodyData.toString().getBytes(charset);
     val body = Request.Body.encoded(bytes, charset);
 

@@ -33,6 +33,12 @@ public class ManyFilesWriter extends AbstractWriter {
 
   SingleFileWriter fileWriter = new SingleFileWriter();
 
+  /**
+   * 对多文件的支持
+   * @param value object to write.
+   *
+   * @return
+   */
   @Override
   public boolean isApplicable (Object value) {
     if (value instanceof File[]) {

@@ -32,6 +32,7 @@ import lombok.val;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
+ * TODO: spring对form表单的支持，它主要对文件上传进行了支持
  * Adds support for {@link MultipartFile} type to {@link FormEncoder}.
  *
  * @author Tomasz Juchniewicz &lt;tjuchniewicz@gmail.com&gt;
@@ -55,23 +56,31 @@ public class SpringFormEncoder extends FormEncoder {
     super(delegate);
 
     val processor = (MultipartFormContentProcessor) getContentProcessor(MULTIPART);
+    // TODO: 往MultipartFormContentProcessor中添加了两个writer,一个是对单个MultipartFile的支持
+    // TODO: 一个是对多MultipartFile的支持
     processor.addFirstWriter(new SpringSingleMultipartFileWriter());
     processor.addFirstWriter(new SpringManyMultipartFilesWriter());
   }
 
   @Override
   public void encode (Object object, Type bodyType, RequestTemplate template) throws EncodeException {
+    // TODO: 判断bodyType类型，如果是个多MultipartFile
     if (bodyType.equals(MultipartFile[].class)) {
       val files = (MultipartFile[]) object;
       val data = new HashMap<String, Object>(files.length, 1.F);
       for (val file : files) {
         data.put(file.getName(), file);
       }
+      // TODO: 调用父类去处理，转成了map，key对应每个文件名，value对应着每个MultipartFile
       super.encode(data, MAP_STRING_WILDCARD, template);
+      // TODO: 如果就是单个的MultipartFile
     } else if (bodyType.equals(MultipartFile.class)) {
       val file = (MultipartFile) object;
       val data = singletonMap(file.getName(), object);
+      // TODO: 也生成一个map交由父类去处理
       super.encode(data, MAP_STRING_WILDCARD, template);
+
+      // TODO: 如果是个集合类型的MultipartFile，也进行转成Map
     } else if (isMultipartFileCollection(object)) {
       val iterable = (Iterable<?>) object;
       val data = new HashMap<String, Object>();
@@ -81,16 +90,24 @@ public class SpringFormEncoder extends FormEncoder {
       }
       super.encode(data, MAP_STRING_WILDCARD, template);
     } else {
+      // TODO: 其它类型的交给父类去处理吧
       super.encode(object, bodyType, template);
     }
   }
 
+  /**
+   * TODO: 判断是否是个MultipartFile集合
+   * @param object
+   * @return
+   */
   private boolean isMultipartFileCollection (Object object) {
+    // TODO: 不是iterable类型的就直接返回false
     if (!(object instanceof Iterable)) {
       return false;
     }
     val iterable = (Iterable<?>) object;
     val iterator = iterable.iterator();
+    // TODO: 如果存在元素，并且元素类型是MultipartFile，那就返回true
     return iterator.hasNext() && iterator.next() instanceof MultipartFile;
   }
 }

@@ -31,6 +31,9 @@ import lombok.val;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 public enum ContentType {
 
+  /**
+   * TODO: 这里支持了3中，其实主要用到的就是，第2种 和 第3种
+   */
   UNDEFINED("undefined"),
   URLENCODED("application/x-www-form-urlencoded"),
   MULTIPART("multipart/form-data");

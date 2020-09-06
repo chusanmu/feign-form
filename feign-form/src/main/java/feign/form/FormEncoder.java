@@ -36,7 +36,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.val;
 
 /**
- *
+ * TODO: 对于表单特殊支持的编码器
  * @author Artem Labazin
  */
 @FieldDefaults(level = PRIVATE, makeFinal = true)
@@ -53,6 +53,9 @@ public class FormEncoder implements Encoder {
 
   Encoder delegate;
 
+  /**
+   * TODO: 每个contentType,对应着各自的处理器
+   */
   Map<ContentType, ContentProcessor> processors;
 
   /**
@@ -70,6 +73,9 @@ public class FormEncoder implements Encoder {
   public FormEncoder (Encoder delegate) {
     this.delegate = delegate;
 
+    /**
+     * TODO: 注意这里注册了两个处理器，一个用于处理 MULTIPART，另一个用于处理 URLENCODED
+     */
     val list = asList(
         new MultipartFormContentProcessor(delegate),
         new UrlencodedFormContentProcessor()
@@ -77,6 +83,7 @@ public class FormEncoder implements Encoder {
 
     processors = new HashMap<ContentType, ContentProcessor>(list.size(), 1.F);
     for (ContentProcessor processor : list) {
+      // TODO: 将这两个处理器转成map，key为支持的contentType, value为processor
       processors.put(processor.getSupportedContentType(), processor);
     }
   }
@@ -86,22 +93,31 @@ public class FormEncoder implements Encoder {
   public void encode (Object object, Type bodyType, RequestTemplate template) throws EncodeException {
     String contentTypeValue = getContentTypeValue(template.headers());
     val contentType = ContentType.of(contentTypeValue);
+    // TODO: 把contentType取到，然后判断processors是否能支持处理这两种，如果不支持，ok，那就用被包装进来的encoder去处理
     if (!processors.containsKey(contentType)) {
       delegate.encode(object, bodyType, template);
       return;
     }
 
+    /* ---------------- 否则它开始去处理 -------------- */
+
     Map<String, Object> data;
+    // TODO: 先看看当前bodyType是否是个map
     if (MAP_STRING_WILDCARD.equals(bodyType)) {
+      // TODO: 如果是个map，就进行强转
       data = (Map<String, Object>) object;
+      // TODO: 否则判断是否是个 pojo, 如果是，好的，转为一个map，所以我们在用formEncoder的时候，在表单提交时，可以使用java 对象
     } else if (isUserPojo(bodyType)) {
+      // TODO: 进行转为map
       data = toMap(object);
     } else {
+      // TODO: 否则，就用被包装者去处理编码
       delegate.encode(object, bodyType, template);
       return;
     }
 
     val charset = getCharset(contentTypeValue);
+    // TODO: 从processors中根据指定的contentType拿出来一个处理器去处理
     processors.get(contentType).process(template, charset, data);
   }
 

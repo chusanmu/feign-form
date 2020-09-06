@@ -19,21 +19,29 @@ package feign.form.multipart;
 import feign.codec.EncodeException;
 
 /**
+ * 对字节数组的输出
  *
  * @author Artem Labazin
  */
 public class ByteArrayWriter extends AbstractWriter {
 
+  /**
+   * TODO: 支持字节数组
+   * @param value object to write.
+   *
+   * @return
+   */
   @Override
-  public boolean isApplicable (Object value) {
+  public boolean isApplicable(Object value) {
     return value instanceof byte[];
   }
 
   @Override
-  protected void write (Output output, String key, Object value) throws EncodeException {
+  protected void write(Output output, String key, Object value) throws EncodeException {
     writeFileMetadata(output, key, null, null);
 
     byte[] bytes = (byte[]) value;
+    // TODO: 直接将字节流写出
     output.write(bytes);
   }
 }

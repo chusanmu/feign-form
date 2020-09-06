@@ -29,6 +29,7 @@ import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 
 /**
+ * TODO: 定义了个输出流，写出到byteArrayOutputStream
  * Output representation utility class.
  *
  * @author Artem Labazin

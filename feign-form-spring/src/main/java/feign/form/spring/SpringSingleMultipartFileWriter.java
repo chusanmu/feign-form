@@ -46,6 +46,7 @@ public class SpringSingleMultipartFileWriter extends AbstractWriter {
     } catch (IOException ex) {
       throw new EncodeException("Getting multipart file's content bytes error", ex);
     }
+    // TODO: 写到流里面去
     output.write(bytes);
   }
 }

@@ -32,6 +32,12 @@ import lombok.val;
 @Slf4j
 public class SingleFileWriter extends AbstractWriter {
 
+  /**
+   * TODO: 对file类型的支持
+   * @param value object to write.
+   *
+   * @return
+   */
   @Override
   public boolean isApplicable (Object value) {
     return value instanceof File;

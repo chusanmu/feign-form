@@ -33,6 +33,9 @@ import org.springframework.web.multipart.MultipartFile;
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 public class SpringManyMultipartFilesWriter extends AbstractWriter {
 
+  /**
+   * TODO: 将单个的给组合进来了
+   */
   SpringSingleMultipartFileWriter fileWriter = new SpringSingleMultipartFileWriter();
 
   @Override
